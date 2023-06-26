@@ -18,58 +18,58 @@ import org.example.mongoConnect.MongoClientConnection;
 public class PopupUser {
 
     private JFrame frame;
-    private JTextField nomField;
-    private JTextField prenomField;
-    private JTextField dateNaissanceField;
-    private JComboBox<String> sexeComboBox;
+    private JTextField lastNameField;
+    private JTextField firstNameField;
+    private JTextField birthDateField;
+    private JComboBox<String> sexComboBox;
 
     public PopupUser() {
-        frame = new JFrame("Formulaire");
+        frame = new JFrame("Form");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 200);
         frame.setLayout(new GridLayout(5, 2));
 
-        JLabel nomLabel = new JLabel("Nom:");
-        nomField = new JTextField();
+        JLabel lastNameLabel = new JLabel("Last name:");
+        lastNameField = new JTextField();
 
-        JLabel prenomLabel = new JLabel("Prénom:");
-        prenomField = new JTextField();
+        JLabel firstNameLabel = new JLabel("First name:");
+        firstNameField = new JTextField();
 
-        JLabel dateNaissanceLabel = new JLabel("Date de naissance:");
-        dateNaissanceField = new JTextField();
+        JLabel birthDateLabel = new JLabel("Birth date:");
+        birthDateField = new JTextField();
 
-        JLabel sexeLabel = new JLabel("Sexe:");
-        String[] sexeOptions = { "Masculin", "Féminin" };
-        sexeComboBox = new JComboBox<>(sexeOptions);
-        JButton enregistrerButton = new JButton("Enregistrer");
-        enregistrerButton.addActionListener(new ActionListener() {
+        JLabel sexLabel = new JLabel("sex:");
+        String[] sexeOptions = { "Male", "Female" };
+        sexComboBox = new JComboBox<>(sexeOptions);
+        JButton saveButton = new JButton("Save");
+        saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String nom = nomField.getText();
-                String prenom = prenomField.getText();
-                String dateNaissanceText = dateNaissanceField.getText();
-                String sexe = (String) sexeComboBox.getSelectedItem();
+                String lastName = lastNameField.getText();
+                String firstName = firstNameField.getText();
+                String birthDateText = birthDateField.getText();
+                String sex = (String) sexComboBox.getSelectedItem();
 
-                if (nom.isEmpty() || prenom.isEmpty() || dateNaissanceText.isEmpty()) {
-                    JOptionPane.showMessageDialog(frame, "Veuillez remplir tous les champs obligatoires.", "Erreur de saisie", JOptionPane.ERROR_MESSAGE);
+                if (lastName.isEmpty() || firstName.isEmpty() || birthDateText.isEmpty()) {
+                    JOptionPane.showMessageDialog(frame, "Please fill in all mandatory fields.", "Input error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
-                Date dateNaissance = null;
+                Date birthDate = null;
 
                 try {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                    dateNaissance = dateFormat.parse(dateNaissanceText);
+                    birthDate = dateFormat.parse(birthDateText);
                 } catch (ParseException ex) {
                     ex.printStackTrace();
-                    JOptionPane.showMessageDialog(frame, "Veuillez saisir la date de naissance au format dd/MM/yyyy.", "Erreur de saisie", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "Please enter the date of birth in dd/MM/yyyy format.", "Input error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
-                User user = new User(nom, prenom, dateNaissance, sexe);
+                User user = new User(lastName, firstName, birthDate, sex);
 
                 MongoDatabase database = MongoClientConnection.connectToMongoClient();
 
-                MongoCollection<Document> collection = database.getCollection("nom_de_la_collection");
+                MongoCollection<Document> collection = database.getCollection("name_collection");
 
                 Document document = new Document();
                 document.put("name", user.getName());
@@ -83,16 +83,16 @@ public class PopupUser {
             }
         });
 
-        frame.add(nomLabel);
-        frame.add(nomField);
-        frame.add(prenomLabel);
-        frame.add(prenomField);
-        frame.add(dateNaissanceLabel);
-        frame.add(dateNaissanceField);
-        frame.add(sexeLabel);
-        frame.add(sexeComboBox);
+        frame.add(lastNameLabel);
+        frame.add(lastNameField);
+        frame.add(firstNameLabel);
+        frame.add(firstNameField);
+        frame.add(birthDateLabel);
+        frame.add(birthDateField);
+        frame.add(sexLabel);
+        frame.add(sexComboBox);
         frame.add(new JLabel());
-        frame.add(enregistrerButton);
+        frame.add(saveButton);
 
         frame.setVisible(true);
     }
