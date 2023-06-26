@@ -12,8 +12,9 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 import org.bson.Document;
-import org.example.model.User;
-import org.example.mongoConnect.MongoClientConnection;
+
+import org.example.model.User.User;
+import org.example.databaseClient.databaseClient;
 
 public class PopupUser {
 
@@ -67,17 +68,9 @@ public class PopupUser {
 
                 User user = new User(lastName, firstName, birthDate, sex);
 
-                MongoDatabase database = MongoClientConnection.connectToMongoClient();
-
-                MongoCollection<Document> collection = database.getCollection("name_collection");
-
-                Document document = new Document();
-                document.put("name", user.getName());
-                document.put("surname", user.getSurname());
-                document.put("birthdate", user.getBirthdate());
-                document.put("sex", user.getSex());
-
-                collection.insertOne(document);
+                databaseClient client = new databaseClient();
+                client.init();
+                client.register(user);
 
                 frame.dispose();
             }

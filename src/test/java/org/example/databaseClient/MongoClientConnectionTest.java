@@ -1,4 +1,4 @@
-package org.example.mongoConnect;
+package org.example.databaseClient;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -20,7 +20,7 @@ public class MongoClientConnectionTest {
     private static final String DATABASE_NAME = "DESKTOP_YNOV_DATABASE";
     private static final String COLLECTION_NAME = "user";
 
-    private MongoClientConnection mongoClientConnection;
+    private databaseClient mongoClientConnection;
     private MongoDatabase testDatabase;
     private MongoCollection<Document> testUserCollection;
 
@@ -29,7 +29,7 @@ public class MongoClientConnectionTest {
     @BeforeEach
     public void setUp() {
         // Create a new instance of MongoClientConnection
-        mongoClientConnection = new MongoClientConnection();
+        mongoClientConnection = new databaseClient();
         mongoClient = mongoClientConnection.getMongoClient();
         this.testDatabase = mongoClient.getDatabase(DATABASE_NAME);
         testUserCollection = testDatabase.getCollection(COLLECTION_NAME);
