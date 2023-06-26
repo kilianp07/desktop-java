@@ -1,4 +1,4 @@
-package org.example.model;
+package org.example.model.Activity;
 public class Activity {
     private String name;
     private int durationInMinutes;

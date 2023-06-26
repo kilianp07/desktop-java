@@ -1,25 +1,34 @@
 package org.example.mongoConnect;
 
-import com.mongodb.ConnectionString;
-        import com.mongodb.MongoClientSettings;
-        import com.mongodb.MongoException;
-        import com.mongodb.ServerApi;
-        import com.mongodb.ServerApiVersion;
-        import com.mongodb.client.MongoClient;
-        import com.mongodb.client.MongoClients;
-        import com.mongodb.client.MongoDatabase;
-        import org.bson.Document;
+import com.mongodb.*;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
+import org.example.model.User.User;
 
 public class MongoClientConnection {
-    public static void main(String[] args) {
-        String connectionString = "mongodb+srv://application-desktop:application-desktop@cluster0.mhqxhpt.mongodb.net/?retryWrites=true&w=majority";
+    private MongoCollection<Document> userCollection;
+
+    private MongoClient mongoClient;
+
+    private static String connectionString = "mongodb+srv://application-desktop:application-desktop@cluster0.mhqxhpt.mongodb.net/?retryWrites=true&w=majority";
+    private MongoDatabase database;
+
+    public MongoClientConnection() {
+        this.mongoClient = MongoClients.create(connectionString);
+        this.database = mongoClient.getDatabase("DESKTOP_YNOV_DATABASE");
+        this.userCollection = database.getCollection("user");
+    }
+    public void main(String[] args) {
 
         ServerApi serverApi = ServerApi.builder()
                 .version(ServerApiVersion.V1)
                 .build();
 
         MongoClientSettings settings = MongoClientSettings.builder()
-                .applyConnectionString(new ConnectionString(connectionString))
+                .applyConnectionString(new ConnectionString(this.connectionString))
                 .serverApi(serverApi)
                 .build();
 
@@ -34,5 +43,19 @@ public class MongoClientConnection {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void register(User user) {
+        Document userDocument = new Document("name",user.getName())
+                .append("surname", user.getSurname())
+                .append("birthdate", user.getBirthdate())
+                .append("sex", user.getSex());
+
+        userCollection.insertOne(userDocument);
+        System.out.println("User registered successfully.");
+    }
+
+    public MongoClient getMongoClient() {
+        return mongoClient;
     }
 }

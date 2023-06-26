@@ -1,6 +1,6 @@
 package org.example.model;
-import static org.junit.jupiter.api.Assertions.*;
 
+import org.example.model.Activity.Activity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
