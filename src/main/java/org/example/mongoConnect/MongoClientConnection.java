@@ -39,10 +39,12 @@ public class MongoClientConnection {
                 MongoDatabase database = mongoClient.getDatabase("admin");
                 database.runCommand(new Document("ping", 1));
                 System.out.println("Pinged your deployment. You successfully connected to MongoDB!");
+                return database;
             } catch (MongoException e) {
                 e.printStackTrace();
             }
         }
+        return null;
     }
 
     public void register(User user) {
