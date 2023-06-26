@@ -49,13 +49,11 @@ public class PopupUser {
                 String dateNaissanceText = dateNaissanceField.getText();
                 String sexe = (String) sexeComboBox.getSelectedItem();
 
-                // Validate fields
                 if (nom.isEmpty() || prenom.isEmpty() || dateNaissanceText.isEmpty()) {
                     JOptionPane.showMessageDialog(frame, "Veuillez remplir tous les champs obligatoires.", "Erreur de saisie", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
-                // Conversion de la date de naissance en objet Date
                 Date dateNaissance = null;
 
                 try {
@@ -67,25 +65,21 @@ public class PopupUser {
                     return;
                 }
 
-                // Création de l'objet User
                 User user = new User(nom, prenom, dateNaissance, sexe);
 
                 MongoDatabase database = MongoClientConnection.connectToMongoClient();
 
-                // Obtention de la collection
                 MongoCollection<Document> collection = database.getCollection("nom_de_la_collection");
 
-                // Création du document à insérer
                 Document document = new Document();
                 document.put("name", user.getName());
                 document.put("surname", user.getSurname());
                 document.put("birthdate", user.getBirthdate());
                 document.put("sex", user.getSex());
 
-                // Insertion du document dans la collection
                 collection.insertOne(document);
 
-                frame.dispose(); // Ferme la fenêtre après enregistrement
+                frame.dispose();
             }
         });
 
@@ -97,7 +91,7 @@ public class PopupUser {
         frame.add(dateNaissanceField);
         frame.add(sexeLabel);
         frame.add(sexeComboBox);
-        frame.add(new JLabel()); // Pour laisser un espace vide
+        frame.add(new JLabel());
         frame.add(enregistrerButton);
 
         frame.setVisible(true);
