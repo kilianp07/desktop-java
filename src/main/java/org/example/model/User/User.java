@@ -1,4 +1,4 @@
-package org.example.model;
+package org.example.model.User;
 
 import java.util.Date;
 
@@ -7,6 +7,7 @@ public class User {
     private String surname;
     private Date birthdate;
     private String sex;
+
 
     public User(String name, String surname, Date birthdate, String sex) {
         this.name = name;
@@ -48,4 +49,6 @@ public class User {
     public void setSex(String sex) {
         this.sex = sex;
     }
+
+
 }
