@@ -11,7 +11,8 @@ import com.mongodb.ConnectionString;
         import org.bson.Document;
 
 public class MongoClientConnection {
-    public static void main(String[] args) {
+
+    public static MongoDatabase connectToMongoClient() {
         String connectionString = "mongodb+srv://application-desktop:application-desktop@cluster0.mhqxhpt.mongodb.net/?retryWrites=true&w=majority";
 
         ServerApi serverApi = ServerApi.builder()
@@ -30,9 +31,11 @@ public class MongoClientConnection {
                 MongoDatabase database = mongoClient.getDatabase("admin");
                 database.runCommand(new Document("ping", 1));
                 System.out.println("Pinged your deployment. You successfully connected to MongoDB!");
+                return database;
             } catch (MongoException e) {
                 e.printStackTrace();
             }
         }
+        return null;
     }
 }
