@@ -31,7 +31,7 @@ public class UserPlatform implements IUserPlatform {
     @Override
     public void addActivityToUser(User user, Activity activity) {
         // Find the user document
-        Document userDocument = userProvider.getUserDocumentById(user.getObjectId());
+        Document userDocument = userProvider.getUserById(user.getObjectId());
 
         if (userDocument != null) {
             // Get the existing activities array from the user document

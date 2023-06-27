@@ -13,6 +13,8 @@ public class User {
 
     private ObjectId objectId;
 
+    public User() {
+    }
 
     public User(String name, String surname, Date birthdate, String sex, ArrayList<Activity> activityList) {
         this.name = name;
@@ -23,6 +25,11 @@ public class User {
     }
 
     // Getters and setters for the properties
+
+
+    public void setObjectId(ObjectId objectId) {
+        this.objectId = objectId;
+    }
 
     public String getName() {
         return name;

@@ -7,7 +7,8 @@ import com.mongodb.client.model.Projections;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.example.model.User.User;
-import org.example.provider.IUserProvider;
+import org.example.platform.IUserPlatform;
+import org.example.platform.UserPlatform;
 import org.example.provider.UserProvider;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,7 +30,7 @@ public class MongoClientConnectionTest {
     private MongoCollection<Document> testUserCollection;
 
     private MongoClient mongoClient;
-    private IUserProvider userManager;
+    private IUserPlatform userPlatform;
 
     @BeforeEach
     public void setUp() {
@@ -38,7 +39,7 @@ public class MongoClientConnectionTest {
         mongoClient = mongoClientConnection.getMongoClient();
         this.testDatabase = mongoClient.getDatabase(DATABASE_NAME);
         testUserCollection = testDatabase.getCollection(COLLECTION_NAME);
-        userManager = new UserProvider(testDatabase.getCollection("Users"));
+        userPlatform = new UserPlatform(testDatabase.getCollection("users"));
     }
 
     @AfterEach
@@ -58,7 +59,7 @@ public class MongoClientConnectionTest {
 
 
         // Call the register method
-        userManager.addOneUser(UserToDocument(new User(name, surname, birthdate, sex, new ArrayList<>())));
+        userPlatform.register(new User(name, surname, birthdate, sex, new ArrayList<>()));
 
         // Retrieve the inserted document from the test collection
         Bson projectionFields = Projections.fields(
