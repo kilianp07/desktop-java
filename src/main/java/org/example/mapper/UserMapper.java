@@ -3,7 +3,7 @@ package org.example.mapper;
 import org.bson.Document;
 import org.example.model.User.User;
 
-public class UserMapper {
+public abstract class UserMapper {
     public static Document UserToDocument(User user){
         return new Document()
                 .append("name", user.getName())
