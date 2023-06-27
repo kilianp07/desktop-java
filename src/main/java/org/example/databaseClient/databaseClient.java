@@ -5,9 +5,14 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.result.InsertOneResult;
 import org.bson.Document;
 import org.example.model.Activity.Activity;
 import org.example.model.User.User;
+import org.example.repository.IUserManager;
+import org.example.repository.UserManager;
+
+import static org.example.mapper.UserMapper.UserToDocument;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +24,15 @@ public class databaseClient {
     private MongoClient mongoClient;
     private static String connectionString = "mongodb+srv://application-desktop:application-desktop@cluster0.mhqxhpt.mongodb.net/?retryWrites=true&w=majority";
     private MongoDatabase database;
+    private IUserManager userManager;
 
     public databaseClient() {
         this.mongoClient = MongoClients.create(connectionString);
         this.database = mongoClient.getDatabase("DESKTOP_YNOV_DATABASE");
         this.userCollection = database.getCollection("user");
         this.activityCollection = database.getCollection("activity");
+        userManager = new UserManager(userCollection);
+
     }
     public void init() {
         ServerApi serverApi = ServerApi.builder()
@@ -44,12 +52,7 @@ public class databaseClient {
     }
 
     public void register(User user) {
-        Document userDocument = new Document("name",user.getName())
-                .append("surname", user.getSurname())
-                .append("birthdate", user.getBirthdate())
-                .append("sex", user.getSex());
-
-        userCollection.insertOne(userDocument);
+        InsertOneResult addResult = userManager.addOneUser(UserToDocument(user));
         System.out.println("User registered successfully.");
     }
 
