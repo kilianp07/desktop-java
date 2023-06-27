@@ -7,12 +7,8 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.bson.Document;
-import org.example.model.Activity.Activity;
 import org.example.platform.IUserPlatform;
 import org.example.platform.UserPlatform;
-
-import java.util.Date;
-import java.util.List;
 
 public class DatabaseClient {
     private MongoCollection<Document> userCollection;
@@ -51,6 +47,7 @@ public class DatabaseClient {
         }
     }
 
+
     public MongoCollection<Document> getUserCollection() {
         return userCollection;
     }
@@ -62,5 +59,4 @@ public class DatabaseClient {
     public MongoClient getMongoClient() {
         return mongoClient;
     }
-
 }

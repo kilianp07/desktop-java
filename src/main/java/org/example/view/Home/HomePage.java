@@ -1,5 +1,6 @@
 package org.example.view.Home;
 import org.example.controller.MainController;
+import org.example.view.Activity.ActivityForm;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,6 +25,10 @@ public class HomePage extends JFrame {
         JMenu menu = new JMenu("Menu");
 
         JMenuItem item1 = new JMenuItem("Register an activity");
+        item1.addActionListener(e -> {
+            new ActivityForm();
+            dispose();
+        });
         JMenuItem item2 = new JMenuItem("History");
         JMenuItem item3 = new JMenuItem("Reports");
 

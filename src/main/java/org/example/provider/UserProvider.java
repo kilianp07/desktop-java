@@ -1,12 +1,18 @@
 package org.example.provider;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.result.InsertOneResult;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import org.example.model.Activity.Activity;
 import org.example.model.User.User;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 import static org.example.mapper.UserMapper.DocumentToUser;
+import static org.example.mapper.UserMapper.UserToDocument;
 
 public class UserProvider implements IUserProvider {
     private MongoCollection<Document> userCollection;
@@ -16,8 +22,8 @@ public class UserProvider implements IUserProvider {
     }
     
     @Override
-    public InsertOneResult addOneUser(Document userDocument) {
-        return userCollection.insertOne(userDocument);
+    public InsertOneResult addOneUser(User user) {
+        return userCollection.insertOne(UserToDocument(user));
     }
 
     @Override
@@ -26,8 +32,18 @@ public class UserProvider implements IUserProvider {
     }
 
     @Override
-    public UpdateResult updateUserById(ObjectId userId, Document newEntity) {
-        return userCollection.updateOne(new Document("_id", userId), new Document("$set", newEntity));
+    public UpdateResult updateUserById(ObjectId userId, User newEntity) {
+        return userCollection.updateOne(new Document("_id", userId), new Document("$set", UserToDocument(newEntity)));
+    }
+
+    @Override
+    public ArrayList<User> getAllUser() {
+        FindIterable<Document> allUserDocuments = userCollection.find();
+        ArrayList<User> users = new ArrayList<User>();
+        for (Document userDocument : allUserDocuments) {
+            users.add(DocumentToUser(userDocument));
+        }
+        return users;
     }
 
 

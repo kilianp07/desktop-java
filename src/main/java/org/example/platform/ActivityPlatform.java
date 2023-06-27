@@ -8,9 +8,12 @@ import org.example.model.User.User;
 import org.example.provider.IUserProvider;
 import org.example.provider.UserProvider;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import static org.example.mapper.ActivityMapper.ActivityToDocument;
 
 public class ActivityPlatform implements IActivityPlatform {
     private IUserProvider userProvider;
@@ -31,5 +34,18 @@ public class ActivityPlatform implements IActivityPlatform {
         List<Activity> activities = user.getActivityList();
 
         return activities;
+    }
+
+    @Override
+    public void addActivityToUser(User user, Activity activity) {
+        if (user != null) {
+            List<Activity> activities = user.getActivityList();
+            activities.add(activity);
+
+            userProvider.updateUserById(user.getObjectId(), user);
+            System.out.println("Activity created and associated with the user successfully.");
+        } else {
+            System.out.println("User not found.");
+        }
     }
 }

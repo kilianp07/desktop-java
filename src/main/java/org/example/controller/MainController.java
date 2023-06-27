@@ -1,6 +1,8 @@
 package org.example.controller;
 
+import org.bson.types.ObjectId;
 import org.example.databaseClient.DatabaseClient;
+import org.example.model.Activity.Activity;
 import org.example.model.User.User;
 import org.example.model.User.UserService;
 import org.example.view.Home.HomePage;
@@ -36,8 +38,6 @@ public class MainController {
     public static void setSelectedUser(User user) {
         selectedUser = user;
         new HomePage();
-
-        System.out.println("Selected user: " + user.getName() + " " + user.getSurname());
     }
 
     public static User getSelectedUser() {
@@ -48,10 +48,17 @@ public class MainController {
         new UserForm();
     }
 
-    public void register(User user) {
+    public static void newActivity(Activity activity) {
         client.init();
-        client.register(user);
+        client.newActivity(selectedUser,activity);
+    }
+
+    public static void register(User user) {
+        client.init();
+        ObjectId id = client.register(user);
         selectedUser = user;
+        selectedUser.setObjectId(new ObjectId(String.valueOf(id)));
+        System.out.println("Registered user: " + id);
         new HomePage();
     }
 

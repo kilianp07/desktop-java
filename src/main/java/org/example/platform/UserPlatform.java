@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.example.mapper.ActivityMapper.ActivityToDocument;
-import static org.example.mapper.UserMapper.UserToDocument;
 
 public class UserPlatform implements IUserPlatform {
     private IUserProvider userProvider;
@@ -24,31 +23,30 @@ public class UserPlatform implements IUserPlatform {
 
     @Override
     public void register(User user) {
-        InsertOneResult addResult = userProvider.addOneUser(UserToDocument(user));
+        InsertOneResult addResult = userProvider.addOneUser(user);
         System.out.println("User registered successfully.");
     }
 
     @Override
     public void addActivityToUser(User user, Activity activity) {
-        // Find the user document
-        Document userDocument = userProvider.getUserById(user.getObjectId());
-
-        if (userDocument != null) {
+        if (user != null) {
             // Get the existing activities array from the user document
-            List<Document> activities = userDocument.getList("activity", Document.class, new ArrayList<>());
+            List<Activity> activities = user.getActivityList();
 
             // Append the new activity document to the activities array
-            activities.add(ActivityToDocument(activity));
-
-            // Update the activities array in the user document
-            userDocument.put("activities", activities);
+            activities.add(activity);
 
             // Update the user document in the user collection
-            userProvider.updateUserById(user.getObjectId(), userDocument);
+            userProvider.updateUserById(user.getObjectId(), user);
 
             System.out.println("Activity created and associated with the user successfully.");
         } else {
             System.out.println("User not found.");
         }
+    }
+
+    @Override
+    public ArrayList<User> getAllUsers() {
+        return userProvider.getAllUser();
     }
 }
