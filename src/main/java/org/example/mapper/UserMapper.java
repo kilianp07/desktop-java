@@ -6,7 +6,9 @@ import org.example.model.User.User;
 
 import java.util.ArrayList;
 
-public class UserMapper {
+
+
+public abstract class UserMapper {
     public static Document UserToDocument(User user){
         return new Document()
                 .append("name", user.getName())

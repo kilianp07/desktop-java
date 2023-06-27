@@ -1,39 +1,47 @@
 package org.example.databaseClient;
 
 import com.mongodb.*;
-import com.mongodb.client.*;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.InsertOneResult;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.example.model.Activity.Activity;
 import org.example.model.User.User;
+import org.example.repository.ActivityManager;
+import org.example.repository.IActivityManager;
 import org.example.repository.IUserManager;
 import org.example.repository.UserManager;
 
-import static org.example.mapper.ActivityMapper.ActivityToDocument;
-import static org.example.mapper.UserMapper.UserToDocument;
-
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import java.util.Date;
+import static org.example.mapper.ActivityMapper.ActivityToDocument;
+import static org.example.mapper.UserMapper.UserToDocument;
 
 public class DatabaseClient {
     private MongoCollection<Document> userCollection;
-    private MongoCollection<Document> activityCollection;
+
     private MongoClient mongoClient;
     private static String connectionString = "";
     private MongoDatabase database;
     private IUserManager userManager;
+
+    private IActivityManager activityManager;
+
     public DatabaseClient() {
         Dotenv dotenv = Dotenv.configure().load();
         connectionString = dotenv.get("ConnectionString");
         this.mongoClient = MongoClients.create(connectionString);
         this.database = mongoClient.getDatabase("DESKTOP_YNOV_DATABASE");
         this.userCollection = database.getCollection("user");
-        this.activityCollection = database.getCollection("activity");
         userManager = new UserManager(userCollection);
+        this.activityManager = new ActivityManager(userCollection);
 
     }
     public void init() {
@@ -82,8 +90,8 @@ public class DatabaseClient {
         }
     }
 
-    public MongoClient getMongoClient() {
-        return mongoClient;
+    public List<Activity> getActivitiesBetweenDates(String userID, Date startDate, Date endDate) {
+        return activityManager.getBetweenDates(userID, startDate, endDate);
     }
 
     public ArrayList<User> getUsers(){
@@ -102,6 +110,9 @@ public class DatabaseClient {
             users.add(user);
         }
         return users;
+}
+    public MongoClient getMongoClient() {
+        return mongoClient;
     }
 
     public void newActivity(User selectedUser, Activity activity) {

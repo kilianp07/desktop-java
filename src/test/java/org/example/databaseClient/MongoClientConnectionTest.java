@@ -38,7 +38,7 @@ public class MongoClientConnectionTest {
         mongoClient = mongoClientConnection.getMongoClient();
         this.testDatabase = mongoClient.getDatabase(DATABASE_NAME);
         testUserCollection = testDatabase.getCollection(COLLECTION_NAME);
-        userManager = new UserManager(testDatabase.getCollection("Users"));
+        userManager = new UserManager(testDatabase.getCollection("user"));
     }
 
     @AfterEach
