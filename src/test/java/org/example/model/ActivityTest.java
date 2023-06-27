@@ -4,6 +4,8 @@ import org.example.model.Activity.Activity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.Date;
+
 public class ActivityTest {
 
     @Test
@@ -12,7 +14,8 @@ public class ActivityTest {
         String name = "Running";
         int durationInMinutes = 30;
         int rpFeltPostEffort = 7;
-        Activity activity = new Activity(name, durationInMinutes, rpFeltPostEffort);
+        Date date = new Date();
+        Activity activity = new Activity(name, durationInMinutes, rpFeltPostEffort, date);
 
         // Verify the activity's properties
         Assertions.assertEquals(name, activity.getName());
@@ -27,7 +30,8 @@ public class ActivityTest {
         String name = "Cycling";
         int durationInMinutes = 45;
         int rpFeltPostEffort = 6;
-        Activity activity = new Activity(name, durationInMinutes, rpFeltPostEffort);
+        Date date = new Date();
+        Activity activity = new Activity(name, durationInMinutes, rpFeltPostEffort, date);
 
         // Modify the duration and RPE
         int newDuration = 60;

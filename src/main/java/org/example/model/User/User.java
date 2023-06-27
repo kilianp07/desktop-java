@@ -1,5 +1,7 @@
 package org.example.model.User;
 
+import org.bson.types.ObjectId;
+
 import java.util.Date;
 
 public class User {
@@ -7,6 +9,8 @@ public class User {
     private String surname;
     private Date birthdate;
     private String sex;
+
+    private ObjectId objectId;
 
 
     public User(String name, String surname, Date birthdate, String sex) {
@@ -50,5 +54,5 @@ public class User {
         this.sex = sex;
     }
 
-
+    public ObjectId getObjectId() {return objectId;}
 }

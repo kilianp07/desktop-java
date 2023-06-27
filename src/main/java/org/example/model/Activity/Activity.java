@@ -1,15 +1,21 @@
 package org.example.model.Activity;
+
+import java.util.Date;
+
 public class Activity {
     private String name;
     private int durationInMinutes;
     private int rpFeltPostEffort;
     private int load;
 
-    public Activity(String name, int durationInMinutes, int rpFeltPostEffort) {
+    private Date date;
+
+    public Activity(String name, int durationInMinutes, int rpFeltPostEffort, Date date) {
         this.name = name;
         this.durationInMinutes = durationInMinutes;
         this.rpFeltPostEffort = rpFeltPostEffort;
         this.load = durationInMinutes * rpFeltPostEffort;
+        this.date = date;
     }
 
     // Getters and setters for the properties
@@ -43,5 +49,8 @@ public class Activity {
     public int getLoad() {
         return load;
     }
+
+    public Date getDate() {return date;}
+    public void setDate(Date date) {this.date = date;}
 }
 
