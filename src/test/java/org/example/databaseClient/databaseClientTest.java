@@ -8,6 +8,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,11 +20,11 @@ public class databaseClientTest {
     private static final String USER_COLLECTION_NAME = "user";
     private static final String ACTIVITY_COLLECTION_NAME = "activity";
 
-    private databaseClient client;
+    private DatabaseClient client;
 
     @BeforeEach
     public void setup() {
-        client = new databaseClient();
+        client = new DatabaseClient();
         client.init();
     }
 
@@ -39,7 +40,7 @@ public class databaseClientTest {
     @Test
     public void testRegisterUser() {
         // Create a user object
-        User user = new User("John", "Doe", new Date(), "Male");
+        User user = new User("John", "Doe", new Date(), "Male", new ArrayList<>());
 
         // Register the user
         client.register(user);
@@ -58,7 +59,7 @@ public class databaseClientTest {
     @Test
     public void testCreateActivityForUser() {
         // Create a user
-        User user = new User("John", "Doe", new Date(), "Male");
+        User user = new User("John", "Doe", new Date(), "Male", new ArrayList<>());
 
         // Register the user
         client.register(user);

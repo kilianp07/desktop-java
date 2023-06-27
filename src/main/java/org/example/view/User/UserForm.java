@@ -1,4 +1,4 @@
-package org.example.popup;
+package org.example.view.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -6,17 +6,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-
-import org.bson.Document;
-
+import com.sun.tools.javac.Main;
+import org.example.controller.MainController;
+import org.example.model.Activity.Activity;
 import org.example.model.User.User;
-import org.example.databaseClient.databaseClient;
+import org.example.databaseClient.DatabaseClient;
 
-public class PopupUser {
+public class UserForm {
 
     private JFrame frame;
     private JTextField lastNameField;
@@ -24,11 +23,19 @@ public class PopupUser {
     private JTextField birthDateField;
     private JComboBox<String> sexComboBox;
 
-    public PopupUser() {
+    public UserForm() {
         frame = new JFrame("Form");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 200);
         frame.setLayout(new GridLayout(5, 2));
+
+        // Calculate the center coordinates
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int centerX = (screenSize.width - frame.getWidth()) / 2;
+        int centerY = (screenSize.height - frame.getHeight()) / 2;
+
+        // Set the JFrame location to the center
+        frame.setLocation(centerX, centerY);
 
         JLabel lastNameLabel = new JLabel("Last name:");
         lastNameField = new JTextField();
@@ -66,11 +73,10 @@ public class PopupUser {
                     return;
                 }
 
-                User user = new User(lastName, firstName, birthDate, sex);
+                User user = new User(lastName, firstName, birthDate, sex,new ArrayList<Activity>() );
+                MainController mainController = new MainController();
+                mainController.register(user);
 
-                databaseClient client = new databaseClient();
-                client.init();
-                client.register(user);
 
                 frame.dispose();
             }
