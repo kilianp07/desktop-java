@@ -62,37 +62,6 @@ public class databaseClient {
     public void setUserCollection(MongoCollection<Document> userCollection) {
         this.userCollection = userCollection;
     }
-
-    public void register(User user) {
-        InsertOneResult addResult = userProvider.addOneUser(UserToDocument(user));
-        System.out.println("User registered successfully.");
-    }
-
-    public void addActivityToUser(User user, Activity activity) {
-        // Find the user document
-        Document userDocument = userProvider.getUserDocumentById(user.getObjectId());
-
-        if (userDocument != null) {
-            // Get the existing activities array from the user document
-            List<Document> activities = userDocument.getList("activity", Document.class, new ArrayList<>());
-
-            // Append the new activity document to the activities array
-            activities.add(ActivityToDocument(activity));
-
-            // Update the activities array in the user document
-            userDocument.put("activities", activities);
-
-            // Update the user document in the user collection
-            userProvider.updateUserById(user.getObjectId(), userDocument);
-
-            System.out.println("Activity created and associated with the user successfully.");
-        } else {
-            System.out.println("User not found.");
-        }
-    }
-
-
-
     public MongoClient getMongoClient() {
         return mongoClient;
     }
