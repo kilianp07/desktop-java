@@ -4,6 +4,7 @@ import org.example.model.User.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class UserTest {
@@ -15,7 +16,7 @@ public class UserTest {
         String surname = "Doe";
         Date birthdate = new Date();
         String sex = "Male";
-        User user = new User(name, surname, birthdate, sex);
+        User user = new User(name, surname, birthdate, sex, new ArrayList<>());
 
         // Verify the user's properties
         Assertions.assertEquals(name, user.getName());

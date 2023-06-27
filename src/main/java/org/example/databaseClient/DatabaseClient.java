@@ -1,10 +1,7 @@
 package org.example.databaseClient;
 
 import com.mongodb.*;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.*;
 import com.mongodb.client.result.InsertOneResult;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.bson.Document;
@@ -19,16 +16,17 @@ import static org.example.mapper.UserMapper.UserToDocument;
 import java.util.ArrayList;
 import java.util.List;
 
-public class databaseClient {
-    private MongoCollection<Document> userCollection;
+import java.util.ArrayList;
+import java.util.Date;
 
+public class DatabaseClient {
+    private MongoCollection<Document> userCollection;
     private MongoCollection<Document> activityCollection;
     private MongoClient mongoClient;
     private static String connectionString = "";
     private MongoDatabase database;
     private IUserManager userManager;
-
-    public databaseClient() {
+    public DatabaseClient() {
         Dotenv dotenv = Dotenv.configure().load();
         connectionString = dotenv.get("ConnectionString");
         this.mongoClient = MongoClients.create(connectionString);
@@ -83,9 +81,22 @@ public class databaseClient {
         }
     }
 
-
-
     public MongoClient getMongoClient() {
         return mongoClient;
+    }
+
+    public ArrayList<User> getUsers(){
+        FindIterable<Document> documents = userCollection.find();
+        ArrayList<User> users = new ArrayList<>();
+        for (Document document : documents) {
+            String username = document.getString("name");
+            String surname = document.getString("surname");
+            Date birthdate = document.getDate("birthdate");
+            String sex = document.getString("sex");
+            ArrayList<Activity> activityList = (ArrayList<Activity>) document.getList("activityList", Activity.class);
+            User user = new User(username, surname, birthdate, sex, activityList);
+            users.add(user);
+        }
+        return users;
     }
 }
