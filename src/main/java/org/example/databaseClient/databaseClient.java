@@ -6,6 +6,7 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.InsertOneResult;
+import io.github.cdimascio.dotenv.Dotenv;
 import org.bson.Document;
 import org.example.model.Activity.Activity;
 import org.example.model.User.User;
@@ -23,11 +24,13 @@ public class databaseClient {
 
     private MongoCollection<Document> activityCollection;
     private MongoClient mongoClient;
-    private static String connectionString = "mongodb+srv://application-desktop:application-desktop@cluster0.mhqxhpt.mongodb.net/?retryWrites=true&w=majority";
+    private static String connectionString = "";
     private MongoDatabase database;
     private IUserManager userManager;
 
     public databaseClient() {
+        Dotenv dotenv = Dotenv.configure().load();
+        connectionString = dotenv.get("ConnectionString");
         this.mongoClient = MongoClients.create(connectionString);
         this.database = mongoClient.getDatabase("DESKTOP_YNOV_DATABASE");
         this.userCollection = database.getCollection("user");
