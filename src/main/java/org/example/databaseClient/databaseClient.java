@@ -10,8 +10,8 @@ import io.github.cdimascio.dotenv.Dotenv;
 import org.bson.Document;
 import org.example.model.Activity.Activity;
 import org.example.model.User.User;
-import org.example.repository.IUserManager;
-import org.example.repository.UserManager;
+import org.example.provider.IUserProvider;
+import org.example.provider.UserProvider;
 
 import static org.example.mapper.ActivityMapper.ActivityToDocument;
 import static org.example.mapper.UserMapper.UserToDocument;
@@ -26,16 +26,16 @@ public class databaseClient {
     private MongoClient mongoClient;
     private static String connectionString = "";
     private MongoDatabase database;
-    private IUserManager userManager;
+    private IUserProvider userProvider;
 
     public databaseClient() {
         Dotenv dotenv = Dotenv.configure().load();
         connectionString = dotenv.get("ConnectionString");
         this.mongoClient = MongoClients.create(connectionString);
         this.database = mongoClient.getDatabase("DESKTOP_YNOV_DATABASE");
-        this.userCollection = database.getCollection("user");
+        this.setUserCollection(database.getCollection("user"));
         this.activityCollection = database.getCollection("activity");
-        userManager = new UserManager(userCollection);
+        userProvider = new UserProvider(userCollection);
 
     }
     public void init() {
@@ -55,14 +55,22 @@ public class databaseClient {
         }
     }
 
+    public MongoCollection<Document> getUserCollection() {
+        return userCollection;
+    }
+
+    public void setUserCollection(MongoCollection<Document> userCollection) {
+        this.userCollection = userCollection;
+    }
+
     public void register(User user) {
-        InsertOneResult addResult = userManager.addOneUser(UserToDocument(user));
+        InsertOneResult addResult = userProvider.addOneUser(UserToDocument(user));
         System.out.println("User registered successfully.");
     }
 
     public void addActivityToUser(User user, Activity activity) {
         // Find the user document
-        Document userDocument = userManager.getUserDocumentById(user.getObjectId());
+        Document userDocument = userProvider.getUserDocumentById(user.getObjectId());
 
         if (userDocument != null) {
             // Get the existing activities array from the user document
@@ -75,7 +83,7 @@ public class databaseClient {
             userDocument.put("activities", activities);
 
             // Update the user document in the user collection
-            userManager.updateUserById(user.getObjectId(), userDocument);
+            userProvider.updateUserById(user.getObjectId(), userDocument);
 
             System.out.println("Activity created and associated with the user successfully.");
         } else {

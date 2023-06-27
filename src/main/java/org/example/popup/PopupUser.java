@@ -15,6 +15,8 @@ import org.bson.Document;
 
 import org.example.model.User.User;
 import org.example.databaseClient.databaseClient;
+import org.example.platform.IUserPlatform;
+import org.example.platform.UserPlatform;
 
 public class PopupUser {
 
@@ -70,7 +72,9 @@ public class PopupUser {
 
                 databaseClient client = new databaseClient();
                 client.init();
-                client.register(user);
+                IUserPlatform userPlatform = new UserPlatform(client.getUserCollection());
+                userPlatform.register(user);
+
 
                 frame.dispose();
             }

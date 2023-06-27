@@ -7,8 +7,8 @@ import com.mongodb.client.model.Projections;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.example.model.User.User;
-import org.example.repository.IUserManager;
-import org.example.repository.UserManager;
+import org.example.provider.IUserProvider;
+import org.example.provider.UserProvider;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ public class MongoClientConnectionTest {
     private MongoCollection<Document> testUserCollection;
 
     private MongoClient mongoClient;
-    private IUserManager userManager;
+    private IUserProvider userManager;
 
     @BeforeEach
     public void setUp() {
@@ -37,7 +37,7 @@ public class MongoClientConnectionTest {
         mongoClient = mongoClientConnection.getMongoClient();
         this.testDatabase = mongoClient.getDatabase(DATABASE_NAME);
         testUserCollection = testDatabase.getCollection(COLLECTION_NAME);
-        userManager = new UserManager(testDatabase.getCollection("Users"));
+        userManager = new UserProvider(testDatabase.getCollection("Users"));
     }
 
     @AfterEach
