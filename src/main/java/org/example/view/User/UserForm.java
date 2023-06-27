@@ -73,9 +73,8 @@ public class UserForm {
                     return;
                 }
 
-                User user = new User(lastName, firstName, birthDate, sex,new ArrayList<Activity>() );
-                MainController mainController = new MainController();
-                mainController.register(user);
+                User user = new User(null, lastName, firstName, birthDate, sex,new ArrayList<Activity>() );
+                MainController.register(user);
 
 
                 frame.dispose();

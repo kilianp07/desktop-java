@@ -13,16 +13,17 @@ public class User {
 
     private ObjectId objectId;
 
+    public User() {
+    }
 
-    public User(String name, String surname, Date birthdate, String sex, ArrayList<Activity> activityList) {
+    public User(ObjectId objectId, String name, String surname, Date birthdate, String sex, ArrayList<Activity> activityList) {
         this.name = name;
+        this.objectId = objectId;
         this.surname = surname;
         this.birthdate = birthdate;
         this.sex = sex;
         this.activityList = activityList;
     }
-
-    // Getters and setters for the properties
 
     public String getName() {
         return name;
@@ -63,5 +64,9 @@ public class User {
 
     public void setActivityList(ArrayList<Activity> activityList) {
         this.activityList = activityList;
+    }
+
+    public void setObjectId(ObjectId id) {
+        this.objectId = id;
     }
 }

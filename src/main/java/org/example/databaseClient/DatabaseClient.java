@@ -5,6 +5,7 @@ import com.mongodb.client.*;
 import com.mongodb.client.result.InsertOneResult;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.example.model.Activity.Activity;
 import org.example.model.User.User;
 import org.example.repository.IUserManager;
@@ -16,7 +17,6 @@ import static org.example.mapper.UserMapper.UserToDocument;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 public class DatabaseClient {
@@ -53,9 +53,10 @@ public class DatabaseClient {
         }
     }
 
-    public void register(User user) {
+    public ObjectId register(User user) {
         InsertOneResult addResult = userManager.addOneUser(UserToDocument(user));
         System.out.println("User registered successfully.");
+        return addResult.getInsertedId().asObjectId().getValue();
     }
 
     public void addActivityToUser(User user, Activity activity) {
@@ -89,14 +90,31 @@ public class DatabaseClient {
         FindIterable<Document> documents = userCollection.find();
         ArrayList<User> users = new ArrayList<>();
         for (Document document : documents) {
+            ObjectId objectId = document.getObjectId("_id");
             String username = document.getString("name");
             String surname = document.getString("surname");
             Date birthdate = document.getDate("birthdate");
             String sex = document.getString("sex");
             ArrayList<Activity> activityList = (ArrayList<Activity>) document.getList("activityList", Activity.class);
-            User user = new User(username, surname, birthdate, sex, activityList);
+            User user = new User(objectId,username, surname, birthdate, sex, activityList);
+            System.out.println("objid"+objectId);
+            System.out.println("username"+user.getName());
             users.add(user);
         }
         return users;
+    }
+
+    public void newActivity(User selectedUser, Activity activity) {
+        Document userDocument = userManager.getUserDocumentById(selectedUser.getObjectId());
+        System.out.println(selectedUser);
+        if (userDocument != null) {
+            List<Document> activities = userDocument.getList("activity", Document.class, new ArrayList<>());
+            activities.add(ActivityToDocument(activity));
+            userDocument.put("activities", activities);
+            userManager.updateUserById(selectedUser.getObjectId(), userDocument);
+            System.out.println("Activity created and associated with the user successfully.");
+        } else {
+            System.out.println("User not found.");
+        }
     }
 }
