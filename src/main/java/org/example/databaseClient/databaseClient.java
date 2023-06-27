@@ -1,41 +1,35 @@
 package org.example.databaseClient;
 
 import com.mongodb.*;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.result.InsertOneResult;
+import com.mongodb.client.*;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.bson.Document;
 import org.example.model.Activity.Activity;
 import org.example.model.User.User;
-import org.example.provider.IUserProvider;
-import org.example.provider.UserProvider;
+import org.example.platform.IUserPlatform;
+import org.example.platform.UserPlatform;
 
-import static org.example.mapper.ActivityMapper.ActivityToDocument;
-import static org.example.mapper.UserMapper.UserToDocument;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
-public class databaseClient {
+public class DatabaseClient {
     private MongoCollection<Document> userCollection;
-
     private MongoCollection<Document> activityCollection;
     private MongoClient mongoClient;
     private static String connectionString = "";
     private MongoDatabase database;
-    private IUserProvider userProvider;
+    private IUserPlatform userPlatform;
 
-    public databaseClient() {
+    public DatabaseClient() {
+
         Dotenv dotenv = Dotenv.configure().load();
         connectionString = dotenv.get("ConnectionString");
         this.mongoClient = MongoClients.create(connectionString);
         this.database = mongoClient.getDatabase("DESKTOP_YNOV_DATABASE");
         this.setUserCollection(database.getCollection("user"));
         this.activityCollection = database.getCollection("activity");
-        userProvider = new UserProvider(userCollection);
+        userPlatform = new UserPlatform(userCollection);
 
     }
     public void init() {
@@ -64,5 +58,20 @@ public class databaseClient {
     }
     public MongoClient getMongoClient() {
         return mongoClient;
+    }
+
+    public ArrayList<User> getUsers(){
+        FindIterable<Document> documents = userCollection.find();
+        ArrayList<User> users = new ArrayList<>();
+        for (Document document : documents) {
+            String username = document.getString("name");
+            String surname = document.getString("surname");
+            Date birthdate = document.getDate("birthdate");
+            String sex = document.getString("sex");
+            ArrayList<Activity> activityList = (ArrayList<Activity>) document.getList("activityList", Activity.class);
+            User user = new User(username, surname, birthdate, sex, activityList);
+            users.add(user);
+        }
+        return users;
     }
 }

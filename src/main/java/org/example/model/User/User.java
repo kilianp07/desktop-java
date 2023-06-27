@@ -1,7 +1,7 @@
 package org.example.model.User;
-
 import org.bson.types.ObjectId;
-
+import org.example.model.Activity.Activity;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class User {
@@ -9,15 +9,17 @@ public class User {
     private String surname;
     private Date birthdate;
     private String sex;
+    private ArrayList<Activity> activityList;
 
     private ObjectId objectId;
 
 
-    public User(String name, String surname, Date birthdate, String sex) {
+    public User(String name, String surname, Date birthdate, String sex, ArrayList<Activity> activityList) {
         this.name = name;
         this.surname = surname;
         this.birthdate = birthdate;
         this.sex = sex;
+        this.activityList = activityList;
     }
 
     // Getters and setters for the properties
@@ -55,4 +57,11 @@ public class User {
     }
 
     public ObjectId getObjectId() {return objectId;}
+    public ArrayList<Activity> getActivityList() {
+        return activityList;
+    }
+
+    public void setActivityList(ArrayList<Activity> activityList) {
+        this.activityList = activityList;
+    }
 }

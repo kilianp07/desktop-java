@@ -13,6 +13,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import static org.example.mapper.UserMapper.UserToDocument;
@@ -23,7 +24,7 @@ public class MongoClientConnectionTest {
     private static final String DATABASE_NAME = "DESKTOP_YNOV_DATABASE";
     private static final String COLLECTION_NAME = "user";
 
-    private databaseClient mongoClientConnection;
+    private DatabaseClient mongoClientConnection;
     private MongoDatabase testDatabase;
     private MongoCollection<Document> testUserCollection;
 
@@ -33,7 +34,7 @@ public class MongoClientConnectionTest {
     @BeforeEach
     public void setUp() {
         // Create a new instance of MongoClientConnection
-        mongoClientConnection = new databaseClient();
+        mongoClientConnection = new DatabaseClient();
         mongoClient = mongoClientConnection.getMongoClient();
         this.testDatabase = mongoClient.getDatabase(DATABASE_NAME);
         testUserCollection = testDatabase.getCollection(COLLECTION_NAME);
@@ -57,7 +58,7 @@ public class MongoClientConnectionTest {
 
 
         // Call the register method
-        userManager.addOneUser(UserToDocument(new User(name, surname, birthdate, sex)));
+        userManager.addOneUser(UserToDocument(new User(name, surname, birthdate, sex, new ArrayList<>())));
 
         // Retrieve the inserted document from the test collection
         Bson projectionFields = Projections.fields(
