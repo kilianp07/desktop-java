@@ -1,4 +1,4 @@
-package org.example.mongoConnect;
+package org.example.databaseClient;
 
 import com.mongodb.*;
 import com.mongodb.client.MongoClient;
@@ -8,43 +8,32 @@ import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 import org.example.model.User.User;
 
-public class MongoClientConnection {
+public class databaseClient {
     private MongoCollection<Document> userCollection;
-
     private MongoClient mongoClient;
-
     private static String connectionString = "mongodb+srv://application-desktop:application-desktop@cluster0.mhqxhpt.mongodb.net/?retryWrites=true&w=majority";
     private MongoDatabase database;
 
-    public MongoClientConnection() {
+    public databaseClient() {
         this.mongoClient = MongoClients.create(connectionString);
         this.database = mongoClient.getDatabase("DESKTOP_YNOV_DATABASE");
         this.userCollection = database.getCollection("user");
     }
-    public void main(String[] args) {
-
+    public void init() {
         ServerApi serverApi = ServerApi.builder()
                 .version(ServerApiVersion.V1)
                 .build();
-
         MongoClientSettings settings = MongoClientSettings.builder()
-                .applyConnectionString(new ConnectionString(this.connectionString))
+                .applyConnectionString(new ConnectionString(connectionString))
                 .serverApi(serverApi)
                 .build();
-
-        // Create a new client and connect to the server
         try (MongoClient mongoClient = MongoClients.create(settings)) {
-            try {
-                // Send a ping to confirm a successful connection
-                MongoDatabase database = mongoClient.getDatabase("admin");
+                MongoDatabase database = mongoClient.getDatabase("DESKTOP_YNOV_DATABASE");
                 database.runCommand(new Document("ping", 1));
                 System.out.println("Pinged your deployment. You successfully connected to MongoDB!");
-                return database;
-            } catch (MongoException e) {
-                e.printStackTrace();
-            }
+        } catch (MongoException e) {
+            e.printStackTrace();
         }
-        return null;
     }
 
     public void register(User user) {
