@@ -58,6 +58,7 @@ public class UserSelect extends JDialog {
         selectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.out.println("list:"+userList.get(0).getObjectId());
                 String selectedElement = elementList.getSelectedValue();
                 int selectedIndex = elementList.getSelectedIndex();
                 User selectedUser = userList.get(selectedIndex);
