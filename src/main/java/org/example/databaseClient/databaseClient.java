@@ -12,6 +12,7 @@ import org.example.model.User.User;
 import org.example.repository.IUserManager;
 import org.example.repository.UserManager;
 
+import static org.example.mapper.ActivityMapper.ActivityToDocument;
 import static org.example.mapper.UserMapper.UserToDocument;
 
 import java.util.ArrayList;
@@ -56,32 +57,22 @@ public class databaseClient {
         System.out.println("User registered successfully.");
     }
 
-    private Document ActivityToDocument(Activity activity){
-        return new Document("name", activity.getName())
-                .append("durationInMinutes", activity.getDurationInMinutes())
-                .append("RPE", activity.getRpFeltPostEffort())
-                .append("load", activity.getLoad())
-                .append("date", activity.getDate());
-    }
     public void createActivity(User user, Activity activity) {
-        // Create an activity document
-        Document activityDocument = ActivityToDocument(activity);
-
         // Find the user document
-        Document userDocument = userCollection.find(new Document("_id", user.getObjectId())).first();
+        Document userDocument = userManager.getUserDocumentById(user.getObjectId());
 
         if (userDocument != null) {
             // Get the existing activities array from the user document
             List<Document> activities = userDocument.getList("activity", Document.class, new ArrayList<>());
 
             // Append the new activity document to the activities array
-            activities.add(activityDocument);
+            activities.add(ActivityToDocument(activity));
 
             // Update the activities array in the user document
             userDocument.put("activities", activities);
 
             // Update the user document in the user collection
-            userCollection.updateOne(new Document("_id", user.getObjectId()), new Document("$set", userDocument));
+            userManager.updateUserById(user.getObjectId(), userDocument);
 
             System.out.println("Activity created and associated with the user successfully.");
         } else {
