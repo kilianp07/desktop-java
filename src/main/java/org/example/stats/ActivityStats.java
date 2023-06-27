@@ -1,6 +1,6 @@
 package org.example.stats;
 
-import org.example.databaseClient.databaseClient;
+import org.example.databaseClient.DatabaseClient;
 import org.example.model.Activity.Activity;
 
 import java.time.LocalDate;
@@ -11,7 +11,7 @@ import java.util.List;
 public class ActivityStats {
 
     private List<Activity> activities;
-    private databaseClient dbClient;
+    private DatabaseClient dbClient;
    private String userId;
     private float totalLoad;
 
@@ -26,7 +26,7 @@ public class ActivityStats {
     ActivityStats(String userId) {
         this.userId = userId;
 
-        this.dbClient = new databaseClient();
+        this.dbClient = new DatabaseClient();
         this.dbClient.init();
 
         Error error = getActivities();
