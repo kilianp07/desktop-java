@@ -60,7 +60,7 @@ public class databaseClient {
         System.out.println("User registered successfully.");
     }
 
-    public void createActivity(User user, Activity activity) {
+    public void addActivityToUser(User user, Activity activity) {
         // Find the user document
         Document userDocument = userManager.getUserDocumentById(user.getObjectId());
 

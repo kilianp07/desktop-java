@@ -67,7 +67,7 @@ public class databaseClientTest {
         Activity activity = new Activity("Running", 30, 8, new Date());
 
         // Create the activity for the user
-        client.createActivity(user, activity);
+        client.addActivityToUser(user, activity);
 
         // Verify that the activity is associated with the user
         // You may need to modify this assertion based on your actual implementation
