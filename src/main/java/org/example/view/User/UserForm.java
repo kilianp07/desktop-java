@@ -51,8 +51,8 @@ public class UserForm {
         JLabel sexLabel = new JLabel("sex:");
         String[] sexeOptions = { "Male", "Female" };
         sexComboBox = new JComboBox<>(sexeOptions);
-        JButton saveButton = new JButton("Save");
-        saveButton.addActionListener(new ActionListener() {
+        JButton registerButton = new JButton("Register");
+        registerButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String lastName = lastNameField.getText();
                 String firstName = firstNameField.getText();
@@ -80,8 +80,8 @@ public class UserForm {
                 DatabaseClient client = new DatabaseClient();
                 client.init();
                 IUserPlatform userPlatform = new UserPlatform(client.getUserCollection());
-                userPlatform.register(user);
 
+                MainController.register(user);
                 frame.dispose();
             }
         });
@@ -95,7 +95,7 @@ public class UserForm {
         frame.add(sexLabel);
         frame.add(sexComboBox);
         frame.add(new JLabel());
-        frame.add(saveButton);
+        frame.add(registerButton);
 
         frame.setVisible(true);
     }

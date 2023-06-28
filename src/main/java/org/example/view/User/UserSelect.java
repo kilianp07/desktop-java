@@ -52,7 +52,8 @@ public class UserSelect extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 MainController.openUserForm();
-                setVisible(false);
+                dispose();
+                //setVisible(false);
             }
         });
         selectButton.addActionListener(new ActionListener() {
@@ -64,7 +65,8 @@ public class UserSelect extends JDialog {
                 User selectedUser = userList.get(selectedIndex);
                 if (selectedElement != null) {
                     MainController.setSelectedUser(selectedUser);
-                    setVisible(false);
+                    dispose();
+                    //setVisible(false);
                 } else {
                     JOptionPane.showMessageDialog(UserSelect.this, "No element selected");
                 }

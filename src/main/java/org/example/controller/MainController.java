@@ -58,6 +58,7 @@ public class MainController {
 
     public static void newActivity(Activity activity) {
         activityPlatform.addActivityToUser(selectedUser, activity);
+        new HomePage();
     }
 
     public static void register(User user) {
@@ -65,6 +66,7 @@ public class MainController {
         selectedUser = user;
         selectedUser.setObjectId(userId);
         System.out.println("Registered user: " + userId);
+
         new HomePage();
     }
 
