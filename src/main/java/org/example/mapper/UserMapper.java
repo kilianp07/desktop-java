@@ -3,8 +3,6 @@ package org.example.mapper;
 import org.bson.Document;
 import org.example.model.Activity.Activity;
 import org.example.model.User.User;
-
-import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +39,17 @@ public class UserMapper {
 
         newUser.setActivityList(activities);
 
+        return newUser;
+    }
+
+    public static User DocumentToUser(Document document){
+        User newUser = new User();
+        newUser.setName(document.getString("name"));
+        newUser.setSurname(document.getString("surname"));
+        newUser.setBirthdate(document.getDate("birthdate"));
+        newUser.setObjectId(document.getObjectId("_id"));
+        newUser.setSex(document.getString("sex"));
+        newUser.setActivityList((ArrayList<Activity>) document.getList("activities", Activity.class));
         return newUser;
     }
 }

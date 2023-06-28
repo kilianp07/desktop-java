@@ -44,7 +44,7 @@ public class databaseClientTest {
     @Test
     public void testRegisterUser() {
         // Create a user object
-        User user = new User("John", "Doe", new Date(), "Male", new ArrayList<>());
+        User user = new User("John", "Doe", new Date(), "Male");
 
         // Register the user
         userPlatform.register(user);
@@ -63,7 +63,7 @@ public class databaseClientTest {
     @Test
     public void testCreateActivityForUser() {
         // Create a user
-        User user = new User("John", "Doe", new Date(), "Male", new ArrayList<>());
+        User user = new User("John", "Doe", new Date(), "Male");
 
         // Register the user
         userPlatform.register(user);

@@ -5,7 +5,6 @@ import org.example.databaseClient.DatabaseClient;
 import org.example.model.Activity.Activity;
 import org.example.platform.ActivityPlatform;
 import org.example.platform.IActivityPlatform;
-
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -27,7 +26,9 @@ public class ActivityStats {
     //Fitness = Charge - Contrainte
     private float fitness;
 
+
     ActivityStats(ObjectId userId) {
+
         this.userId = userId;
 
         this.dbClient = new DatabaseClient();

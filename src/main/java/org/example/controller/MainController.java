@@ -19,8 +19,10 @@ import java.util.ArrayList;
 // then press Enter. You can now see whitespace characters in your code.
 public class MainController {
     private static DatabaseClient client = new DatabaseClient();
+
     private static IUserPlatform userPlatform = new UserPlatform(client.getUserCollection());
     private static IActivityPlatform activityPlatform = new ActivityPlatform(client.getUserCollection());
+
     private static User selectedUser;
 
     public static void main(String[] args) {
@@ -31,7 +33,9 @@ public class MainController {
     }
 
     public static void checkHasUsers() {
+
         ArrayList<User> users = userPlatform.getAllUsers();
+
         if(users.size() == 0) {
             new UserForm();
         } else {
@@ -53,13 +57,10 @@ public class MainController {
     }
 
     public static void newActivity(Activity activity) {
-        client.init();
         activityPlatform.addActivityToUser(selectedUser, activity);
     }
 
     public static void register(User user) {
-        client.init();
-
         ObjectId id = userPlatform.register(user);
         selectedUser = user;
         selectedUser.setObjectId(new ObjectId(String.valueOf(id)));

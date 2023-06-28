@@ -10,7 +10,8 @@ public class User {
     private String surname;
     private Date birthdate;
     private String sex;
-    private List<Activity> activityList;
+    private List<Activity> activities;
+
 
     private ObjectId objectId;
 
@@ -22,16 +23,31 @@ public class User {
         this.surname = surname;
         this.birthdate = birthdate;
         this.sex = sex;
-        this.activityList = new ArrayList<>();
+        this.activities = new ArrayList<>();
     }
-
-    public User(ObjectId objectId, String name, String surname, Date birthdate, String sex, ArrayList<Activity> activityList) {
+    public User(ObjectId objectId, String name, String surname, Date birthdate, String sex) {
         this.name = name;
         this.objectId = objectId;
         this.surname = surname;
         this.birthdate = birthdate;
         this.sex = sex;
-        this.activityList = activityList;
+        this.activities = new ArrayList<>();
+    }
+
+    public User(String name, String surname, Date birthdate, String sex, ArrayList<Activity> activities) {
+        this.name = name;
+        this.surname = surname;
+        this.birthdate = birthdate;
+        this.sex = sex;
+        this.activities = activities;
+    }
+    public User(ObjectId objectId, String name, String surname, Date birthdate, String sex, ArrayList<Activity> activities) {
+        this.name = name;
+        this.objectId = objectId;
+        this.surname = surname;
+        this.birthdate = birthdate;
+        this.sex = sex;
+        this.activities = activities;
     }
 
     // Getters and setters for the properties
@@ -39,7 +55,11 @@ public class User {
     public void setObjectId(ObjectId id) {
         this.objectId = id;
     }
-    public ObjectId getObjectId() {return objectId;}
+
+    public ObjectId getObjectId() {
+        return objectId;
+    }
+
 
     public String getName() {
         return name;
@@ -74,11 +94,10 @@ public class User {
     }
 
     public List<Activity> getActivityList() {
-        return activityList;
+        return activities;
     }
 
     public void setActivityList(List<Activity> activityList) {
-        this.activityList = activityList;
+        this.activities = activityList;
     }
-
 }

@@ -6,6 +6,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 import org.bson.Document;
 
 
+
 public class DatabaseClient {
     private MongoCollection<Document> userCollection;
 
@@ -20,6 +21,7 @@ public class DatabaseClient {
         mongoClient = MongoClients.create(connectionString);
         database = mongoClient.getDatabase("DESKTOP_YNOV_DATABASE");
         userCollection = database.getCollection("user");
+
     }
     public void init() {
         ServerApi serverApi = ServerApi.builder()
