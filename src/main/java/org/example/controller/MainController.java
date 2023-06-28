@@ -14,6 +14,7 @@ import org.example.view.User.UserSelect;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.List;
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
@@ -58,6 +59,8 @@ public class MainController {
 
     public static void newActivity(Activity activity) {
         activityPlatform.addActivityToUser(selectedUser, activity);
+        List<Activity>activities  = selectedUser.getActivityList();
+        selectedUser.setActivityList(activities);
         new HomePage();
     }
 
@@ -66,7 +69,8 @@ public class MainController {
         selectedUser = user;
         selectedUser.setObjectId(userId);
         System.out.println("Registered user: " + userId);
-
+        List<Activity>activities  = selectedUser.getActivityList();
+        selectedUser.setActivityList(activities);
         new HomePage();
     }
 
