@@ -33,7 +33,7 @@ public class UserProvider implements IUserProvider {
 
     @Override
     public UpdateResult updateUserById(ObjectId userId, User newEntity) {
-        return userCollection.updateOne(new Document("_id", userId), new Document("$set", UserToDocument(newEntity)));
+        return userCollection.replaceOne(new Document("_id", userId), UserToDocument(newEntity));
     }
 
     @Override

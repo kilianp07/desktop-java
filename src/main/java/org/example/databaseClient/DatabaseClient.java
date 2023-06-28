@@ -17,9 +17,9 @@ public class DatabaseClient {
     public DatabaseClient() {
         Dotenv dotenv = Dotenv.configure().load();
         connectionString = dotenv.get("ConnectionString");
-        this.mongoClient = MongoClients.create(connectionString);
-        this.database = mongoClient.getDatabase("DESKTOP_YNOV_DATABASE");
-        this.userCollection = database.getCollection("user");
+        mongoClient = MongoClients.create(connectionString);
+        database = mongoClient.getDatabase("DESKTOP_YNOV_DATABASE");
+        userCollection = database.getCollection("user");
     }
     public void init() {
         ServerApi serverApi = ServerApi.builder()
@@ -36,6 +36,14 @@ public class DatabaseClient {
         } catch (MongoException e) {
             e.printStackTrace();
         }
+    }
+
+    public MongoCollection<Document> getUserCollection() {
+        return userCollection;
+    }
+
+    public void setUserCollection(MongoCollection<Document> userCollection) {
+        this.userCollection = userCollection;
     }
 
     public MongoClient getMongoClient() {

@@ -3,6 +3,7 @@ package org.example.platform;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.result.InsertOneResult;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.example.model.Activity.Activity;
 import org.example.model.User.User;
 import org.example.provider.IUserProvider;
@@ -22,9 +23,10 @@ public class UserPlatform implements IUserPlatform {
     }
 
     @Override
-    public void register(User user) {
+    public ObjectId register(User user) {
         InsertOneResult addResult = userProvider.addOneUser(user);
         System.out.println("User registered successfully.");
+        return addResult.getInsertedId().asObjectId().getValue();
     }
 
     @Override

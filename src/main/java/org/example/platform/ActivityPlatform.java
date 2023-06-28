@@ -39,8 +39,9 @@ public class ActivityPlatform implements IActivityPlatform {
     @Override
     public void addActivityToUser(User user, Activity activity) {
         if (user != null) {
-            List<Activity> activities = user.getActivityList();
+            List<Activity> activities = user.getActivityList() == null ? new ArrayList<>() :  user.getActivityList();
             activities.add(activity);
+            user.setActivityList(activities);
 
             userProvider.updateUserById(user.getObjectId(), user);
             System.out.println("Activity created and associated with the user successfully.");
