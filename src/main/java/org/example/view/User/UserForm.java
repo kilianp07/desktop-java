@@ -13,6 +13,8 @@ import com.sun.tools.javac.Main;
 import org.example.controller.MainController;
 import org.example.model.Activity.Activity;
 import org.example.model.User.User;
+import org.example.platform.IUserPlatform;
+import org.example.platform.UserPlatform;
 import org.example.databaseClient.DatabaseClient;
 
 public class UserForm {
@@ -74,8 +76,11 @@ public class UserForm {
                 }
 
                 User user = new User(null, lastName, firstName, birthDate, sex,new ArrayList<Activity>() );
-                MainController.register(user);
 
+                DatabaseClient client = new DatabaseClient();
+                client.init();
+                IUserPlatform userPlatform = new UserPlatform(client.getUserCollection());
+                userPlatform.register(user);
 
                 frame.dispose();
             }

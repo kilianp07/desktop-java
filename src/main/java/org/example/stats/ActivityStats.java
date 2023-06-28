@@ -1,8 +1,10 @@
 package org.example.stats;
 
+import org.bson.types.ObjectId;
 import org.example.databaseClient.DatabaseClient;
 import org.example.model.Activity.Activity;
-
+import org.example.platform.ActivityPlatform;
+import org.example.platform.IActivityPlatform;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -12,7 +14,8 @@ public class ActivityStats {
 
     private List<Activity> activities;
     private DatabaseClient dbClient;
-   private String userId;
+    private IActivityPlatform activityPlatform;
+   private ObjectId userId;
     private float totalLoad;
 
     // Monotonie = charge hebdomadaire moyenne / l'écart type des charges de la semaine
@@ -23,11 +26,14 @@ public class ActivityStats {
     //Fitness = Charge - Contrainte
     private float fitness;
 
-    ActivityStats(String userId) {
+
+    ActivityStats(ObjectId userId) {
+
         this.userId = userId;
 
         this.dbClient = new DatabaseClient();
         this.dbClient.init();
+        activityPlatform = new ActivityPlatform(dbClient.getUserCollection());
 
         Error error = getActivities();
         if (error != null) {
@@ -43,7 +49,7 @@ public class ActivityStats {
         // Convert LocalDate to Date
         Date previousDateAsDate = Date.from(previousDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-        this.activities = this.dbClient.getActivitiesBetweenDates(userId, previousDateAsDate , new Date());
+        this.activities = activityPlatform.getActivitiesBetweenDates(userId, previousDateAsDate , new Date());
         boolean b = this.activities.size() == 0;
         if (b) {
             System.out.println("No activities found for user " + userId);

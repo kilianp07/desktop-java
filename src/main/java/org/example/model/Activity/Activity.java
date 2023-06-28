@@ -14,7 +14,7 @@ public class Activity {
         this.name = name;
         this.durationInMinutes = durationInMinutes;
         this.rpFeltPostEffort = rpFeltPostEffort;
-        this.load = durationInMinutes * rpFeltPostEffort;
+        load = durationInMinutes * rpFeltPostEffort;
         this.date = date;
     }
 
