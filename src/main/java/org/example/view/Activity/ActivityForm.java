@@ -79,6 +79,7 @@ public ActivityForm() {
             Activity activity = new Activity(name, duration, rpe, new Date());
             MainController.newActivity(activity);
 
+            frame.dispose();
         }
     });
 
