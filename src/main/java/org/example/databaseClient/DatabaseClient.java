@@ -34,6 +34,7 @@ public class DatabaseClient {
         try (MongoClient mongoClient = MongoClients.create(settings)) {
                 MongoDatabase database = mongoClient.getDatabase("DESKTOP_YNOV_DATABASE");
                 database.runCommand(new Document("ping", 1));
+                
                 System.out.println("Pinged your deployment. You successfully connected to MongoDB!");
         } catch (MongoException e) {
             e.printStackTrace();

@@ -76,7 +76,6 @@ public class UserForm {
                 }
 
                 User user = new User(null, lastName, firstName, birthDate, sex,new ArrayList<Activity>() );
-                MainController.register(user);
 
                 DatabaseClient client = new DatabaseClient();
                 client.init();

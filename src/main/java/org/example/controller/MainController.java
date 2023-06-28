@@ -61,10 +61,10 @@ public class MainController {
     }
 
     public static void register(User user) {
-        ObjectId id = userPlatform.register(user);
+        ObjectId userId = userPlatform.register(user);
         selectedUser = user;
-        selectedUser.setObjectId(new ObjectId(String.valueOf(id)));
-        System.out.println("Registered user: " + id);
+        selectedUser.setObjectId(userId);
+        System.out.println("Registered user: " + userId);
         new HomePage();
     }
 
