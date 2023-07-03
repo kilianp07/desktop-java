@@ -6,6 +6,7 @@ import org.example.stats.ActivityStats;
 import org.example.view.Activity.ActivityDetailWindow;
 import org.example.view.Activity.ActivityForm;
 import org.example.view.ReportPage;
+import org.example.view.User.UserSelect;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +15,6 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 
 public class HomePage extends JFrame {
-    private ActivityDetailWindow activityDetailWindow;
 
     public HomePage() {
         // Create the frame
@@ -39,10 +39,15 @@ public class HomePage extends JFrame {
             new ActivityForm();
             dispose();
         });
-        JMenuItem item3 = new JMenuItem("Reports");
-
-        item3.addActionListener(e -> {
+        JMenuItem item2 = new JMenuItem("Reports");
+        item2.addActionListener(e -> {
             new ReportPage(new ActivityStats(MainController.getSelectedUser().getObjectId()));
+        });
+
+        JMenuItem item3 = new JMenuItem("Logout");
+        item3.addActionListener(e -> {
+            MainController.main(null);
+            dispose();
         });
 
         JLabel currentUserName = new JLabel();
@@ -88,6 +93,7 @@ public class HomePage extends JFrame {
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         menu.add(item1);
+        menu.add(item2);
         menu.add(item3);
         menuBar.add(menu);
 
@@ -96,7 +102,7 @@ public class HomePage extends JFrame {
         setVisible(true);
     }
     private void openActivityDetailWindow(Activity activity) {
-        activityDetailWindow = new ActivityDetailWindow(activity, this);
+        ActivityDetailWindow activityDetailWindow = new ActivityDetailWindow(activity, this);
         dispose();
     }
 }
