@@ -2,6 +2,7 @@ package org.example.view.Home;
 
 import org.example.controller.MainController;
 import org.example.model.Activity.Activity;
+import org.example.view.Activity.ActivityDetailWindow;
 import org.example.view.Activity.ActivityForm;
 
 import javax.swing.*;
@@ -11,6 +12,8 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 
 public class HomePage extends JFrame {
+    private ActivityDetailWindow activityDetailWindow;
+
     public HomePage() {
         // Create the frame
         setTitle("Home");
@@ -66,12 +69,10 @@ public class HomePage extends JFrame {
         selectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String selectedElement = elementList.getSelectedValue();
                 int selectedIndex = elementList.getSelectedIndex();
-                Activity selectedActivity = MainController.getSelectedUser().getActivityList().get(selectedIndex);
-                if (selectedElement != null) {
-                    MainController.newActivity(selectedActivity);
-                    dispose();
+                if (selectedIndex != -1) {
+                    Activity selectedActivity = MainController.getSelectedUser().getActivityList().get(selectedIndex);
+                    openActivityDetailWindow(selectedActivity);
                 } else {
                     JOptionPane.showMessageDialog(HomePage.this, "Please select an activity");
                 }
@@ -88,5 +89,9 @@ public class HomePage extends JFrame {
         setJMenuBar(menuBar);
         getContentPane().add(mainPanel);
         setVisible(true);
+    }
+    private void openActivityDetailWindow(Activity activity) {
+        activityDetailWindow = new ActivityDetailWindow(activity, this);
+        dispose();
     }
 }
