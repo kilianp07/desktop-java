@@ -1,9 +1,16 @@
 package org.example.view.Home;
+
 import org.example.controller.MainController;
+import org.example.model.Activity.Activity;
+import org.example.stats.ActivityStats;
 import org.example.view.Activity.ActivityForm;
+import org.example.view.ReportPage;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 
 public class HomePage extends JFrame {
     public HomePage() {
@@ -29,23 +36,61 @@ public class HomePage extends JFrame {
             new ActivityForm();
             dispose();
         });
-        JMenuItem item2 = new JMenuItem("History");
         JMenuItem item3 = new JMenuItem("Reports");
 
-        JLabel currentUserName = new JLabel();
-        currentUserName.setText("logged as: "+MainController.getSelectedUser().getName());
+        item3.addActionListener(e -> {
+            new ReportPage(new ActivityStats(MainController.getSelectedUser().getObjectId()));
+        });
 
-        getContentPane().add(currentUserName, BorderLayout.NORTH);
+        JLabel currentUserName = new JLabel();
+        JLabel listActivities = new JLabel();
+        currentUserName.setText("logged as: " + MainController.getSelectedUser().getName());
+
+        listActivities.setText("List of activities: ");
+
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        for (Activity activity : MainController.getSelectedUser().getActivityList()) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            String formattedDate = dateFormat.format(activity.getDate());
+            listModel.addElement(activity.getName() + " at " + formattedDate);
+        }
+        JList<String> elementList = new JList<>(listModel);
+        JScrollPane scrollPane = new JScrollPane(elementList);
+
+        // Create the main panel
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.add(currentUserName, BorderLayout.NORTH);
+        mainPanel.add(listActivities, BorderLayout.CENTER);
+        mainPanel.add(scrollPane, BorderLayout.CENTER);
+
+        // Create the button panel
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT)); // Align the button to the right
+        JButton selectButton = new JButton("Select activity");
+        buttonPanel.add(selectButton);
+
+        selectButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selectedElement = elementList.getSelectedValue();
+                int selectedIndex = elementList.getSelectedIndex();
+                Activity selectedActivity = MainController.getSelectedUser().getActivityList().get(selectedIndex);
+                if (selectedElement != null) {
+                    MainController.newActivity(selectedActivity);
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(HomePage.this, "Please select an activity");
+                }
+            }
+        });
+
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         menu.add(item1);
-        menu.add(item2);
         menu.add(item3);
-
         menuBar.add(menu);
 
         setJMenuBar(menuBar);
-
+        getContentPane().add(mainPanel);
         setVisible(true);
     }
 }
-

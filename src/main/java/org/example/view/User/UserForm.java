@@ -13,6 +13,8 @@ import com.sun.tools.javac.Main;
 import org.example.controller.MainController;
 import org.example.model.Activity.Activity;
 import org.example.model.User.User;
+import org.example.platform.IUserPlatform;
+import org.example.platform.UserPlatform;
 import org.example.databaseClient.DatabaseClient;
 
 public class UserForm {
@@ -49,8 +51,8 @@ public class UserForm {
         JLabel sexLabel = new JLabel("sex:");
         String[] sexeOptions = { "Male", "Female" };
         sexComboBox = new JComboBox<>(sexeOptions);
-        JButton saveButton = new JButton("Save");
-        saveButton.addActionListener(new ActionListener() {
+        JButton registerButton = new JButton("Register");
+        registerButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String lastName = lastNameField.getText();
                 String firstName = firstNameField.getText();
@@ -74,9 +76,12 @@ public class UserForm {
                 }
 
                 User user = new User(null, lastName, firstName, birthDate, sex,new ArrayList<Activity>() );
+
+                DatabaseClient client = new DatabaseClient();
+                client.init();
+                IUserPlatform userPlatform = new UserPlatform(client.getUserCollection());
+
                 MainController.register(user);
-
-
                 frame.dispose();
             }
         });
@@ -90,7 +95,7 @@ public class UserForm {
         frame.add(sexLabel);
         frame.add(sexComboBox);
         frame.add(new JLabel());
-        frame.add(saveButton);
+        frame.add(registerButton);
 
         frame.setVisible(true);
     }
