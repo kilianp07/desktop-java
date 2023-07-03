@@ -2,8 +2,10 @@ package org.example.view.Home;
 
 import org.example.controller.MainController;
 import org.example.model.Activity.Activity;
+import org.example.stats.ActivityStats;
 import org.example.view.Activity.ActivityDetailWindow;
 import org.example.view.Activity.ActivityForm;
+import org.example.view.ReportPage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,8 +39,11 @@ public class HomePage extends JFrame {
             new ActivityForm();
             dispose();
         });
-        JMenuItem item2 = new JMenuItem("History");
         JMenuItem item3 = new JMenuItem("Reports");
+
+        item3.addActionListener(e -> {
+            new ReportPage(new ActivityStats(MainController.getSelectedUser().getObjectId()));
+        });
 
         JLabel currentUserName = new JLabel();
         JLabel listActivities = new JLabel();
@@ -73,6 +78,7 @@ public class HomePage extends JFrame {
                 if (selectedIndex != -1) {
                     Activity selectedActivity = MainController.getSelectedUser().getActivityList().get(selectedIndex);
                     openActivityDetailWindow(selectedActivity);
+
                 } else {
                     JOptionPane.showMessageDialog(HomePage.this, "Please select an activity");
                 }
@@ -82,7 +88,6 @@ public class HomePage extends JFrame {
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         menu.add(item1);
-        menu.add(item2);
         menu.add(item3);
         menuBar.add(menu);
 

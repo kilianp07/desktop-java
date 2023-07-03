@@ -15,7 +15,7 @@ public class ActivityStats {
     private List<Activity> activities;
     private DatabaseClient dbClient;
     private IActivityPlatform activityPlatform;
-   private ObjectId userId;
+    private ObjectId userId;
     private float totalLoad;
 
     // Monotonie = charge hebdomadaire moyenne / l'écart type des charges de la semaine
@@ -27,7 +27,7 @@ public class ActivityStats {
     private float fitness;
 
 
-    ActivityStats(ObjectId userId) {
+    public ActivityStats(ObjectId userId) {
 
         this.userId = userId;
 
@@ -36,10 +36,12 @@ public class ActivityStats {
         activityPlatform = new ActivityPlatform(dbClient.getUserCollection());
 
         Error error = getActivities();
+
         if (error != null) {
             System.out.println(error.getMessage());
             return;
         }
+        makeCalculations();
     }
 
     private Error getActivities(){
@@ -50,8 +52,7 @@ public class ActivityStats {
         Date previousDateAsDate = Date.from(previousDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
         this.activities = activityPlatform.getActivitiesBetweenDates(userId, previousDateAsDate , new Date());
-        boolean b = this.activities.size() == 0;
-        if (b) {
+        if (this.activities.size() == 0) {
             System.out.println("No activities found for user " + userId);
             return new Error("No activities found for user " + userId);
         }
@@ -63,21 +64,28 @@ public class ActivityStats {
         for (Activity activity : this.activities) {
             this.totalLoad += activity.getLoad();
         }
+//        System.out.println("Total load: " + this.totalLoad);
         this.monotony = this.totalLoad / getStandardDeviation();
+//        System.out.println("Monotony: " + this.totalLoad + "/" + getStandardDeviation() + " = " + this.monotony / getStandardDeviation());
         this.constraint = this.totalLoad * this.monotony;
+//        System.out.println("Constraint: " + this.totalLoad + " * " + this.monotony + " = " + this.constraint);
         this.fitness = this.totalLoad - this.constraint;
+//        System.out.println("Fitness: " + this.totalLoad + " - " + this.constraint + " = " + this.fitness);
     }
 
     private float getStandardDeviation() {
         int n = activities.size();
         float mean = totalLoad / n;
+        System.out.println("Mean: " + mean);
         float sumOfSquaredDifferences = 0;
 
         for (Activity activity : activities) {
             float load = activity.getLoad();
             float difference = load - mean;
+            System.out.println("Difference: " + load + " - " + mean + " = " + difference);
             sumOfSquaredDifferences += difference * difference;
         }
+        System.out.println("Sum of squared differences: " + sumOfSquaredDifferences);
 
         return (float) Math.sqrt(sumOfSquaredDifferences / n);
     }

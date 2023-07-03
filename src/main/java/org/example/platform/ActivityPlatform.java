@@ -7,7 +7,10 @@ import org.example.model.Activity.Activity;
 import org.example.model.User.User;
 import org.example.provider.IUserProvider;
 import org.example.provider.UserProvider;
-
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.TemporalField;
+import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
