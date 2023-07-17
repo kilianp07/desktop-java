@@ -12,8 +12,6 @@ import org.example.provider.UserProvider;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.example.mapper.ActivityMapper.ActivityToDocument;
-
 public class UserPlatform implements IUserPlatform {
     private IUserProvider userProvider;
 
@@ -50,5 +48,11 @@ public class UserPlatform implements IUserPlatform {
     @Override
     public ArrayList<User> getAllUsers() {
         return userProvider.getAllUser();
+    }
+
+    @Override
+    public void updateUserProfile(User user) {
+        userProvider.updateUserById(user.getObjectId(), user);
+        System.out.println("User profile updated successfully.");
     }
 }
