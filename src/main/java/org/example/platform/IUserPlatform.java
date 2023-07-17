@@ -10,4 +10,6 @@ public interface IUserPlatform {
     ObjectId register(User user);
     void addActivityToUser(User user, Activity activity);
     ArrayList<User> getAllUsers();
+
+    void updateUserProfile(User user);
 }

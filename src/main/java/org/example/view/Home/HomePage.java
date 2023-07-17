@@ -6,6 +6,7 @@ import org.example.stats.ActivityStats;
 import org.example.view.Activity.ActivityDetailWindow;
 import org.example.view.Activity.ActivityForm;
 import org.example.view.ReportPage;
+import org.example.view.User.ProfilePage;
 import org.example.view.User.UserSelect;
 
 import javax.swing.*;
@@ -44,8 +45,13 @@ public class HomePage extends JFrame {
             new ReportPage(new ActivityStats(MainController.getSelectedUser().getObjectId()));
         });
 
-        JMenuItem item3 = new JMenuItem("Logout");
+        JMenuItem item3 = new JMenuItem("Profile");
         item3.addActionListener(e -> {
+            new ProfilePage();
+        });
+
+        JMenuItem item4 = new JMenuItem("Logout");
+        item4.addActionListener(e -> {
             MainController.main(null);
             dispose();
         });
@@ -95,6 +101,7 @@ public class HomePage extends JFrame {
         menu.add(item1);
         menu.add(item2);
         menu.add(item3);
+        menu.add(item4);
         menuBar.add(menu);
 
         setJMenuBar(menuBar);

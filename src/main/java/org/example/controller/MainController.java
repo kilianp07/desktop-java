@@ -74,4 +74,11 @@ public class MainController {
         new HomePage();
     }
 
+    public static void updateUser(User user) {
+        userPlatform.updateUserProfile(user);
+        selectedUser = user;
+        List<Activity>activities  = selectedUser.getActivityList();
+        selectedUser.setActivityList(activities);
+        new HomePage();
+    }
 }
